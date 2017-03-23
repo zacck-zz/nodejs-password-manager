@@ -5,8 +5,7 @@ var storage = require('node-persist');
 storage.initSync();
 
 
-//lets get an accounts array
-var accounts = storage.getItemSync('accounts')
+
 
 //this is used to make a new account
 //name string github
@@ -14,17 +13,25 @@ var accounts = storage.getItemSync('accounts')
 //password pwd232
 //in account
 function createAccount(account) {
-  if(account.name != undefined && account.username != undefined && account.password != undefined) {
-    //save the account
-    accounts.push(account)
-    console.log(`${account.name} account saved!`)
-  } else {
-    //alert the user of an error
-    console.log('please ensure to provide an account name, username and password');
-  }
+    if(account.name != undefined && account.username != undefined && account.password != undefined) {
+      //lets get an accounts array
+      var accounts = storage.getItemSync('accounts');
+      if(typeof(accounts) === 'undefined'){
+        accounts = [];
+      }
+      //save the account
+      accounts.push(account)
+      //remember to save account to machine
+      storage.setItemSync('accounts', accounts);
+      console.log(`${account.name} account saved!`)
+    } else {
+      //alert the user of an error
+      console.log('please ensure to provide an account name, username and password');
+    }
 }
 
 function getAccount(accountName) {
+  var accounts = storage.getItemSync('accounts');
   //lets fimd the account with the names
   return accounts.find((acc) => {
     return accountName == acc.name
@@ -32,11 +39,11 @@ function getAccount(accountName) {
 }
 
 
-createAccount({
-  name: 'whatsapp',
-  username: 'superbike_z',
-  password: 'hahahehe343'
-});
+// createAccount({
+//   name: 'whatsapp',
+//   username: 'superbike_z',
+//   password: 'hahahehe343'
+// });
 
 
 console.log('WhatsApp Account', getAccount('whatsapp'));
