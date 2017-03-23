@@ -96,7 +96,11 @@ if(command === 'create') {
   });
 } else if (command =='get') {
   var accname = argv.name
-  console.log(getAccount(accname));
+  if(getAccount(accname) === undefined) {
+    console.log(`${accname} doesnt exist :(`);
+  } else {
+    console.log(getAccount(accname))
+  }
 }
 
 // createAccount({
