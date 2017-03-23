@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/zacck/nodejs-password-manager.git",
   "author": "zacck <coderv63@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "node-persist": "^2.0.10"
+  }
 }
