@@ -8,8 +8,21 @@ storage.initSync();
 //save
 //key , value
 //storage.setItemSync('name', 'Zacck');
-
+// storage.setItemSync('accounts', [{
+//   username: 'Zacck',
+//   balance: 40
+// }]);
 //get from storage
-var name = storage.getItemSync('name');
+var accounts = storage.getItemSync('accounts');
+//console.log('saved accounts are', accounts);
 
-console.log('saved name is', name);
+//add a new account
+//accounts.push({username: 'coderv63@gmail.com', balance: 45});
+//storage.setItemSync('accounts', accounts);
+
+//pull the accounts from the computer
+console.log('new account added!', storage.getItemSync('accounts'));
+
+
+
+//challenge  load new accounts
