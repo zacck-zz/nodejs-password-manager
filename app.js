@@ -1,5 +1,45 @@
 console.log('starting password manager');
 
+//add a few commands
+var argv = require('yargs')
+    .command('create', 'creates a new account', function(yargs){
+      //require a param
+      yargs.options({
+        name: {
+          demand: true, //makes sure this param is provided
+          alias: 'n', // this is a shorter version for name when typing long commands
+          description: 'The Account name goes here',
+          type: 'string'
+        },
+        username: {
+          demand: true,
+          alias: 'u',
+          description: 'Your last username goes here',
+          type: 'string'
+        },
+        password: {
+          demand: true,
+          alias: 'p',
+          description: 'Your password goes here',
+          type:'string'
+        }
+      }).help('help')
+    })
+    .command('get', 'gets the account needed', function(yargs){
+      yargs.options({
+        name: {
+          demand: true,
+          alias: 'n',
+          description: 'The Account Name goes here',
+          type: 'string'
+        }
+      })
+    })
+    .help('help') // enable help
+    .argv;
+var command = argv._[0];
+
+
 var storage = require('node-persist');
 //initialize storage
 storage.initSync();
@@ -48,6 +88,16 @@ function deleteAccount(accountName) {
   return storage.setItemSync('accounts', filteredAccounts);
 }
 
+if(command === 'create') {
+  createAccount({
+    name: argv.name,
+    username: argv.username,
+    password: argv.password
+  });
+} else if (command =='get') {
+  var accname = argv.name
+  console.log(getAccount(accname));
+}
 
 // createAccount({
 //    name: 'whatsapp',
@@ -62,9 +112,9 @@ function deleteAccount(accountName) {
 //  })
 
 
-console.log('WhatsApp Account', getAccount('whatsapp'));
+//console.log('WhatsApp Account', getAccount('whatsapp'));
 
-console.log('accounts', storage.getItemSync('accounts'));
+//console.log('accounts', storage.getItemSync('accounts'));
 
 //deleteAccount('gerry');
 

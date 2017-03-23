@@ -1,4 +1,23 @@
-var argv = require('yargs').argv;
+var argv = require('yargs')
+    .command('hello', 'greets the user', function(yargs){
+      //require a param
+      yargs.options({
+        name: {
+          demand: true, //makes sure this param is provided
+          alias: 'n', // this is a shorter version for name when typing long commands
+          description: 'Your first name goes here'
+          type: 'string'
+        },
+        lastname: {
+          demand: true,
+          alias: 'l',
+          description: 'Your last name goes here',
+          type: 'string'
+        }
+      }).help('help')
+    })
+    .help('help') // enable help
+    .argv;
 
 
 //check if name is specified
