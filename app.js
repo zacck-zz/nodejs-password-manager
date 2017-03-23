@@ -122,24 +122,3 @@ if(command === 'create') {
   var account = JSON.parse(bytes.toString(crypto.enc.Utf8));
   console.log(account);
 }
-
-// createAccount({
-//    name: 'whatsapp',
-//    username: 'superbike_z',
-//    password: 'hahahehe343'
-//  });
-//
-//  createAccount({
-//    name: 'whatsappy',
-//    username: 'superbike_z',
-//    password: 'hahahehe343'
-//  })
-
-
-//console.log('WhatsApp Account', getAccount('whatsapp'));
-
-//console.log('accounts', storage.getItemSync('accounts'));
-
-//deleteAccount('gerry');
-
-//console.log('accounts', storage.getItemSync('accounts'));
