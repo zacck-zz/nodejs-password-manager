@@ -38,12 +38,34 @@ function getAccount(accountName) {
   });
 }
 
+function deleteAccount(accountName) {
+  var accounts = storage.getItemSync('accounts');
+  //lets fimd the account with the names
+  var filteredAccounts = accounts.filter((acc) => {
+    return accountName != acc.name;
+  });
+  console.log(`${accountName} deleted!`);
+  return storage.setItemSync('accounts', filteredAccounts);
+}
+
 
 // createAccount({
-//   name: 'whatsapp',
-//   username: 'superbike_z',
-//   password: 'hahahehe343'
-// });
+//    name: 'whatsapp',
+//    username: 'superbike_z',
+//    password: 'hahahehe343'
+//  });
+//
+//  createAccount({
+//    name: 'whatsappy',
+//    username: 'superbike_z',
+//    password: 'hahahehe343'
+//  })
 
 
 console.log('WhatsApp Account', getAccount('whatsapp'));
+
+console.log('accounts', storage.getItemSync('accounts'));
+
+//deleteAccount('gerry');
+
+//console.log('accounts', storage.getItemSync('accounts'));
