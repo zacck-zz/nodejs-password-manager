@@ -95,9 +95,15 @@ function getAccount(name, masterpassword) {
   var accounts = storage.getItemSync('accounts');
   //lets fimd the account with the names
   return accounts.find((acc) => {
-    var bytes = crypto.AES.decrypt(acc, masterpassword);
-    var accObj = JSON.parse(bytes.toString(crypto.enc.Utf8));
-    return accObj.name == name
+    try {
+      var bytes = crypto.AES.decrypt(acc, masterpassword);
+      var accObj = JSON.parse(bytes.toString(crypto.enc.Utf8));
+      return accObj.name == name
+    } catch(e) {
+      console.log('sorry ', e.message , 'occured');
+    }
+
+
   });
 }
 
@@ -118,7 +124,12 @@ if(command === 'create') {
     password: argv.password
   }, argv.masterpassword);
 } else if (command =='get') {
-  var bytes = crypto.AES.decrypt(getAccount(argv.name, argv.masterpassword), argv.masterpassword);
-  var account = JSON.parse(bytes.toString(crypto.enc.Utf8));
-  console.log(`Account: ${account.name} \n Username: ${account.username} \n Password: ${account.password}`);
+  try{
+    var bytes = crypto.AES.decrypt(getAccount(argv.name, argv.masterpassword), argv.masterpassword);
+    var account = JSON.parse(bytes.toString(crypto.enc.Utf8));
+    console.log(`Account: ${account.name} \n Username: ${account.username} \n Password: ${account.password}`);
+  } catch(e) {
+    console.log(e.message, ' occured');
+  }
+
 }
