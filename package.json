@@ -11,6 +11,7 @@
   "author": "zacck <coderv63@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "crypto-js": "3.1.5",
     "node-persist": "^2.0.10",
     "yargs": "^7.0.2"
   }
