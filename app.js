@@ -120,5 +120,5 @@ if(command === 'create') {
 } else if (command =='get') {
   var bytes = crypto.AES.decrypt(getAccount(argv.name, argv.masterpassword), argv.masterpassword);
   var account = JSON.parse(bytes.toString(crypto.enc.Utf8));
-  console.log(account);
+  console.log(`Account: ${account.name} \n Username: ${account.username} \n Password: ${account.password}`);
 }
