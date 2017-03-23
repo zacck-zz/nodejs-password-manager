@@ -5,24 +5,38 @@ var storage = require('node-persist');
 storage.initSync();
 
 
-//save
-//key , value
-//storage.setItemSync('name', 'Zacck');
-// storage.setItemSync('accounts', [{
-//   username: 'Zacck',
-//   balance: 40
-// }]);
-//get from storage
-var accounts = storage.getItemSync('accounts');
-//console.log('saved accounts are', accounts);
+//lets get an accounts array
+var accounts = storage.getItemSync('accounts')
 
-//add a new account
-//accounts.push({username: 'coderv63@gmail.com', balance: 45});
-//storage.setItemSync('accounts', accounts);
+//this is used to make a new account
+//name string github
+//username  user123
+//password pwd232
+//in account
+function createAccount(account) {
+  if(account.name != undefined && account.username != undefined && account.password != undefined) {
+    //save the account
+    accounts.push(account)
+    console.log(`${account.name} account saved!`)
+  } else {
+    //alert the user of an error
+    console.log('please ensure to provide an account name, username and password');
+  }
+}
 
-//pull the accounts from the computer
-console.log('new account added!', storage.getItemSync('accounts'));
+function getAccount(accountName) {
+  //lets fimd the account with the names
+  return accounts.find((acc) => {
+    return accountName == acc.name
+  });
+}
 
 
+createAccount({
+  name: 'whatsapp',
+  username: 'superbike_z',
+  password: 'hahahehe343'
+});
 
-//challenge  load new accounts
+
+console.log('WhatsApp Account', getAccount('whatsapp'));
