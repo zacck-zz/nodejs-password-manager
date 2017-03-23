@@ -1,4 +1,6 @@
 console.log('starting password manager');
+var crypto = require('crypto-js');
+
 
 //add a few commands
 var argv = require('yargs')
@@ -22,6 +24,12 @@ var argv = require('yargs')
           alias: 'p',
           description: 'Your password goes here',
           type:'string'
+        },
+        masterpassword: {
+          demand: true,
+          alias: 'm',
+          description: 'Your master password',
+          type:'string'
         }
       }).help('help')
     })
@@ -32,6 +40,12 @@ var argv = require('yargs')
           alias: 'n',
           description: 'The Account Name goes here',
           type: 'string'
+        },
+        masterpassword: {
+          demand: true,
+          alias: 'm',
+          description: 'Your master password',
+          type:'string'
         }
       })
     })
@@ -52,15 +66,22 @@ storage.initSync();
 //username  user123
 //password pwd232
 //in account
-function createAccount(account) {
+function createAccount(account, masterpassword) {
     if(account.name != undefined && account.username != undefined && account.password != undefined) {
       //lets get an accounts array
       var accounts = storage.getItemSync('accounts');
       if(typeof(accounts) === 'undefined'){
         accounts = [];
       }
+      // account.password = crypto.AES.encrypt(account.password, masterpassword);
+      // account.name = crypto.AES.encrypt(account.name, masterpassword);
+      // account.username = crypto.AES.encrypt(account.username, masterpassword);
+
+      const encryptedAccount = crypto.AES.encrypt(JSON.stringify(account), masterpassword);
+
+      //debugger;
       //save the account
-      accounts.push(account)
+      accounts.push(encryptedAccount.toString());
       //remember to save account to machine
       storage.setItemSync('accounts', accounts);
       console.log(`${account.name} account saved!`)
@@ -70,15 +91,17 @@ function createAccount(account) {
     }
 }
 
-function getAccount(accountName) {
+function getAccount(name, masterpassword) {
   var accounts = storage.getItemSync('accounts');
   //lets fimd the account with the names
   return accounts.find((acc) => {
-    return accountName == acc.name
+    var bytes = crypto.AES.decrypt(acc, masterpassword);
+    var accObj = JSON.parse(bytes.toString(crypto.enc.Utf8));
+    return accObj.name == name
   });
 }
 
-function deleteAccount(accountName) {
+function deleteAccount(accountName, masterpassword) {
   var accounts = storage.getItemSync('accounts');
   //lets fimd the account with the names
   var filteredAccounts = accounts.filter((acc) => {
@@ -93,14 +116,11 @@ if(command === 'create') {
     name: argv.name,
     username: argv.username,
     password: argv.password
-  });
+  }, argv.masterpassword);
 } else if (command =='get') {
-  var accname = argv.name
-  if(getAccount(accname) === undefined) {
-    console.log(`${accname} doesnt exist :(`);
-  } else {
-    console.log(getAccount(accname))
-  }
+  var bytes = crypto.AES.decrypt(getAccount(argv.name, argv.masterpassword), argv.masterpassword);
+  var account = JSON.parse(bytes.toString(crypto.enc.Utf8));
+  console.log(account);
 }
 
 // createAccount({
